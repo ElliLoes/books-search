@@ -1,16 +1,43 @@
 import React from "react";
-import "./style.css";
+import Image from "../Image";
+import { Container, Row, Col } from "../Grid";
 
-// This file exports both the List and ListItem components
 
-export function List({ children }) {
+// BookList renders a bootstrap list item
+export function BookList({children}) {
   return (
-    <div className="list-overflow-container">
-      <ul className="list-group">{children}</ul>
-    </div>
-  );
+    <ul className="list-group">{children}</ul>
+    );
 }
 
-export function ListItem({ children }) {
-  return <li className="list-group-item">{children}</li>;
-}
+  // RecipeListItem renders a bootstrap list item containing data from the recipe api call
+  export class BookListItem extends React.Component{
+
+    render(){
+     console.log(this.props)
+;    return (
+      <li>
+        <Container>
+          <Row>
+            <Col size="xs-4 sm-2">
+              <Image src={this.props.image} />
+            </Col>
+            <Col size="xs-8 sm-9">
+              <h3>{this.props.title}<span><h5>{this.props.authors.join(", ")}</h5></span></h3>
+              <p>
+                {this.props.description}
+              </p>
+              <a
+                target="_blank"
+                href={this.props.link}
+                rel="noopener noreferrer"
+              >
+                Go to book!
+              </a>
+            </Col>
+          </Row>
+        </Container>
+      </li>
+    );
+    }
+  }
