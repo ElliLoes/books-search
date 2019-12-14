@@ -51,7 +51,7 @@ class Saved extends Component {
                         image={book.image}
                       />
                       <DeleteBtn
-                        onClick={() => this.deleteFromDB(book._id)}
+                        onClick={() => this.deleteBook(book._id)}
                       />
                     </div>
                   )
