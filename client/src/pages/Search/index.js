@@ -3,76 +3,96 @@ import { Row, Col } from "../../components/Grid";
 import { BookList, BookListItem } from "../../components/List";
 import axios from "axios";
 import NoBooks from '../../components/NoBooks';
-import DeleteBtn from '../../components/DeleteBtn';
-import { toast } from 'react-toastify';
+import AddBook from '../../components/AddBook';
+// import { toast } from 'react-toastify';
 
 
-class Saved extends Component {
+class Search extends Component {
   state = {
-    savedBooks: [],
-    initialized: true
-  }
+    searchRes: [],
+    query: "",
+    books: []
+  };
 
-  componentDidMount() {
-    this.getBooks();
-  }
+  displayRes = data => {
+    this.setState({ books: data.items });
+  };
 
-  getBooks = () => {
-    axios.get("/api/books")
+  searchGBooks = () => {
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${
+      this.state.query
+    }`;
+    axios
+      .get(url)
       .then(res => {
-        this.setState({ savedBooks: res.data })
+        //console.log(res);
+        this.displayRes(res.data);
       })
-      .catch((err => console.log(err)))
-  }
+      .catch(err => console.log(err));
+  };
 
-  deleteFromDB = id => {
-    console.log(id);
+  handleInput = event => {
+    const { name, value } = event.target;
 
-    axios.delete(`/api/books/${id}`)
-      .then( () => {
-        toast.error('Book Deleted');
-        this.getBooks();
-        
-      })
-      .catch(err => console.log(err))
-  }
+    this.setState({
+      [name]: value
+    });
+    //console.log("Query", this.state.query);
+  };
+
+
+  
 
   render() {
     return (
-      <div>
-        <Row>
-          <Col size="md-12">
-            {this.state.savedBooks.length > 0 ?
-              <List>
-                {this.state.savedBooks.map(book => {
-                  console.log(book)
-                  return (
-                    <div>
-                      <BookListItem
-                        key={book._id}
-                        authors={book.authors}
-                        title={book.title}
-                        synopsis={book.synopsis}
-                        link={book.link}
-                        thumbnail={book.thumbnail}
-                      // delete={()=> this.deleteFromDB(book._id)}
-                      />
-                      <DeleteBtn
-                        onClick={() => this.deleteFromDB(book._id)}
-                      />
-                    </div>
-                  )
+      <Row>
+        <Col size="md-12">
+        <div>
+          <input id="bookQ" className="form-control form-control-lg" autoComplete="off" type="text" name="query" onChange={this.handleInput} />
+          <button  type="submit" onClick={this.searchGBooks} >
+            Search for Books
+          </button>
+                   
 
-                })}
-              </List>
-              :
-              <NoBooks />
-            }
-          </Col>
-        </Row>
-      </div>
+          {(this.state.books && this.state.books.length > 0) ? 
+          <BookList>
+          {this.state.books.map(book => {
+            return (
+              <div>
+              <BookListItem
+              key={book.id} 
+              authors={book.volumeInfo.authors ? book.volumeInfo.authors : ["No Author Available"]}
+              title={book.volumeInfo.title}
+              description={book.volumeInfo.description ? 
+                book.volumeInfo.description : "No Description Available"}
+              link={book.volumeInfo.infoLink}
+              image={book.volumeInfo.imageLinks.thumbnail ? 
+                book.volumeInfo.imageLinks.thumbnail : "#"}
+              />
+
+              <AddBook
+              authors={book.volumeInfo.authors ? book.volumeInfo.authors : ["No Author Available"]}
+              title={book.volumeInfo.title}
+              description={book.volumeInfo.description ? 
+                book.volumeInfo.description : "No Description Available"}
+              link={book.volumeInfo.infoLink}
+              image={book.volumeInfo.imageLinks.thumbnail ? 
+                book.volumeInfo.imageLinks.thumbnail : "#"}
+              
+              />
+              </div>
+            )
+          })}
+          </BookList>
+          : 
+          <NoBooks/>         
+          }
+          
+        </div>
+        </Col>
+      </Row>
     );
   }
 }
 
-export default Saved;
+export default Search;

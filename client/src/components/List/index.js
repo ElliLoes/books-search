@@ -4,18 +4,18 @@ import { Container, Row, Col } from "../Grid";
 
 
 // BookList renders a bootstrap list item
-export function BookList({children}) {
+export function BookList({ children }) {
   return (
     <ul className="list-group">{children}</ul>
-    );
+  );
 }
 
-  // RecipeListItem renders a bootstrap list item containing data from the recipe api call
-  export class BookListItem extends React.Component{
+// RecipeListItem renders a bootstrap list item containing data from the recipe api call
+export class BookListItem extends React.Component {
 
-    render(){
-     console.log(this.props)
-;    return (
+  render() {
+    console.log(this.props);
+    return (
       <li>
         <Container>
           <Row>
@@ -39,5 +39,7 @@ export function BookList({children}) {
         </Container>
       </li>
     );
-    }
   }
+}
+
+

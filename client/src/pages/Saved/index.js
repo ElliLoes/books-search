@@ -3,8 +3,8 @@ import DeleteBtn from "../../components/DeleteBtn";
 // import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 // import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
+import { Col, Row } from "../../components/Grid";
+import { BookList, BookListItem } from "../../components/List";
 import NoBooks from '../../components/NoBooks';
 
 class Saved extends Component {
@@ -19,7 +19,7 @@ class Saved extends Component {
 
   loadBooks = () => {
     API.getBooks()
-      .then(res =>
+      .then(res => 
         this.setState({ savedBooks: res.data })
       )
       .catch(err => console.log(err));
@@ -37,12 +37,12 @@ class Saved extends Component {
         <Row>
           <Col size="md-12">
             {this.state.savedBooks.length > 0 ?
-              <List>
+              <BookList>
                 {this.state.savedBooks.map(book => {
                   console.log(book)
                   return (
                     <div>
-                      <List
+                      <BookListItem
                         key={book._id}
                         authors={book.authors}
                         title={book.title}
@@ -57,7 +57,7 @@ class Saved extends Component {
                   )
 
                 })}
-              </List>
+              </BookList>
               :
               <NoBooks />
             }
