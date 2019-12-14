@@ -7,7 +7,7 @@ import API from "../../utils/API";
 class AddBook extends React.Component {
 
   postToDB = (book) => {
-    var dbBook = {
+    const dbBook = {
       title: book.title,
       authors: book.authors,
       description: book.description,
@@ -15,7 +15,9 @@ class AddBook extends React.Component {
       link: book.link
     }
 
-    API.saveBook("/api/books", dbBook)
+    console.log('book data', dbBook);
+
+    API.saveBook(dbBook)
       .then(res => console.log('added', dbBook, res))
       .catch(err => console.log(err))
   }
