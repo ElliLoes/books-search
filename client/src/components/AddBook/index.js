@@ -1,7 +1,5 @@
 import React from "react";
 import Button from "../Button";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import { toast } from 'react-toastify';
 import API from "../../utils/API";
 
 class AddBook extends React.Component {
